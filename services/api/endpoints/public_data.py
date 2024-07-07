@@ -1,4 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel
+from typing import List
 from ..models.public_data import (
     get_products, get_server_time, get_product_book,
     get_product, get_candles, get_market_trades
@@ -6,10 +8,15 @@ from ..models.public_data import (
 from ..schemas.public_data import (
     Product, ServerTime, ProductBook, Candle, MarketTrade
 )
-from typing import List
+from publisher import publish_message  # Import the publisher function
 
 # Create a new router for API endpoints
 router = APIRouter()
+
+
+# Pydantic model for the message
+class Message(BaseModel):
+    message: str
 
 
 # Endpoint to fetch all products
@@ -85,6 +92,18 @@ def fetch_market_trades(product_id: str):
         # Call the function to get market trades
         market_trades = get_market_trades(product_id)
         return market_trades
+    except Exception as e:
+        # Raise an HTTP 500 error if there's an exception
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Endpoint to publish a message to a RabbitMQ queue
+@router.post("/publish/{queue_name}")
+def publish_to_queue(queue_name: str, message: Message):
+    try:
+        # Call the function to publish a message
+        publish_message(queue_name, message.message)
+        return {"status": "Message published"}
     except Exception as e:
         # Raise an HTTP 500 error if there's an exception
         raise HTTPException(status_code=500, detail=str(e))

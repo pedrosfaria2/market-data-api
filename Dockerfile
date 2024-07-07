@@ -13,5 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar o conteúdo do diretório atual para o diretório de trabalho no contêiner
 COPY . .
 
+# Expor a porta 8000 para acessar a aplicação
+EXPOSE 8000
+
 # Comando para rodar a aplicação
 CMD ["uvicorn", "services.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
