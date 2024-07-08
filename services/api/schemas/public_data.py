@@ -2,20 +2,20 @@ from pydantic import BaseModel
 from typing import List, Optional, Union
 
 
-# Model for Server Time
+# Model representing the server time details
 class ServerTime(BaseModel):
     iso: str  # ISO formatted date-time string
     epochSeconds: str  # Epoch time in seconds as a string
     epochMillis: str  # Epoch time in milliseconds as a string
 
 
-# Model for entries in the Product Book (bids and asks)
+# Model for individual entries in the Product Book (bids and asks)
 class ProductBookEntry(BaseModel):
     price: str  # Price of the bid or ask
     size: str  # Size of the bid or ask
 
 
-# Model for the Price Book inside the Product Book
+# Model for the Price Book within the Product Book
 class ProductBookPriceBook(BaseModel):
     product_id: str  # ID of the product
     bids: List[ProductBookEntry]  # List of bids
@@ -23,26 +23,26 @@ class ProductBookPriceBook(BaseModel):
     time: str  # Timestamp of the price book
 
 
-# Model for the Product Book, which contains the Price Book
+# Model representing the Product Book, which contains the Price Book
 class ProductBook(BaseModel):
     pricebook: ProductBookPriceBook  # Nested Price Book
 
 
 # Model for FCM Trading Session Details
 class FCMTradingSessionDetails(BaseModel):
-    is_session_open: Optional[bool]  # Whether the session is open
+    is_session_open: Optional[bool]  # Indicates if the session is open
     open_time: Optional[str]  # Opening time of the session
     close_time: Optional[str]  # Closing time of the session
 
 
-# Model for Perpetual Details
+# Model for Perpetual Details of a future product
 class PerpetualDetails(BaseModel):
     open_interest: Optional[str]  # Open interest for perpetual contracts
     funding_rate: Optional[str]  # Funding rate for perpetual contracts
     funding_time: Optional[str]  # Funding time for perpetual contracts
 
 
-# Model for Future Product Details
+# Model for details of a future product
 class FutureProductDetails(BaseModel):
     venue: Optional[str]  # Venue of the future product
     contract_code: Optional[str]  # Contract code of the future product
@@ -58,7 +58,7 @@ class FutureProductDetails(BaseModel):
     contract_display_name: Optional[str]  # Display name of the contract
 
 
-# Model for Product Details
+# Model representing the details of a product
 class Product(BaseModel):
     product_id: str  # ID of the product
     price: str  # Current price of the product
@@ -99,7 +99,7 @@ class Product(BaseModel):
     approximate_quote_24h_volume: str  # Approximate quote volume in the last 24 hours
 
 
-# Model for Candles (OHLCV data)
+# Model representing Candles (OHLCV data)
 class Candle(BaseModel):
     start: str  # Start time of the candle
     low: str  # Low price during the candle period
@@ -109,7 +109,7 @@ class Candle(BaseModel):
     volume: str  # Volume during the candle period
 
 
-# Model for Market Trades
+# Model representing Market Trades
 class MarketTrade(BaseModel):
     trade_id: str  # ID of the trade
     product_id: str  # ID of the product

@@ -1,20 +1,20 @@
-# Usar uma imagem base oficial do Python
+# Use an official Python 3.9 base image with a slim (minimal) version
 FROM python:3.9-slim
 
-# Definir o diretório de trabalho no contêiner
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copiar o arquivo de requisitos
+# Copy the requirements file to the working directory
 COPY requirements.txt .
 
-# Instalar as dependências
+# Install the dependencies listed in the requirements file
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar o conteúdo do diretório atual para o diretório de trabalho no contêiner
+# Copy the entire content of the current directory to the working directory in the container
 COPY . .
 
-# Expor a porta 8000 para acessar a aplicação
+# Expose port 8000 to allow access to the application
 EXPOSE 8000
 
-# Comando para rodar a aplicação
+# Set the default command to run the application using uvicorn
 CMD ["uvicorn", "services.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
